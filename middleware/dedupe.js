@@ -1,6 +1,7 @@
 const logger = require('pelias-logger').get('api');
 const _ = require('lodash');
 const isDifferent = require('../helper/diffPlaces').isDifferent;
+const isGeographicallyDifferent = require('../helper/diffPlaces').isGeographicallyDifferent;
 const layerPreferences = require('../helper/diffPlaces').layerPreferences;
 const canonical_sources = require('../helper/type_mapping').canonical_sources;
 const field = require('../helper/fieldValue');
@@ -17,8 +18,10 @@ function dedupeResults(req, res, next) {
   // note: the first results must always be unique!
   let unique = [ res.data[0] ];
 
+  const dedupeFunction = req.clean.dedupe === 'geo' ? isGeographicallyDifferent : isDifferent;
+
   // convenience function to search unique array for an existing element which matches a hit
-  let findMatch = (hit) => unique.findIndex(elem => !isDifferent(elem, hit, _.get(req, 'clean.lang.iso6393') ));
+  let findMatch = (hit) => unique.findIndex(elem => !dedupeFunction(elem, hit, _.get(req, 'clean.lang.iso6393') ));
 
   // iterate over res.data using an old-school for loop starting at index 1
   // we can call break at any time to end the iterator
