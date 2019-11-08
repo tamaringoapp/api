@@ -122,7 +122,7 @@ function generateQuery( clean ){
 }
 
 function getQuery(vs) {
-  if (hasStreet(vs) || isPostalCodeOnly(vs) || isPostalCodeWithAdmin(vs)) {
+  if (hasStreet(vs) || isPostalCodeOnly(vs) || isPostalCodeWithAdmin(vs) || isVenue(vs)) {
     return {
       type: 'search_fallback',
       body: fallbackQuery.render(vs)
@@ -155,6 +155,10 @@ function determineQueryType(vs) {
 
 function hasStreet(vs) {
   return vs.isset('input:street');
+}
+
+function isVenue(vs) {
+  return determineQueryType(vs) === 'venue';
 }
 
 function isPostalCodeOnly(vs) {
