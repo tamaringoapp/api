@@ -15,6 +15,7 @@ query.sort( peliasQuery.view.sort_distance );
 
 // non-scoring hard filters
 query.filter( peliasQuery.view.boundary_circle );
+query.filter( peliasQuery.view.boundary_rect );
 query.filter( peliasQuery.view.sources );
 query.filter( peliasQuery.view.layers );
 query.filter( peliasQuery.view.categories );
@@ -50,6 +51,23 @@ function generateQuery( clean ){
       'focus:point:lat': clean['point.lat'],
       'focus:point:lon': clean['point.lon']
     });
+  }
+
+  // boundary rect
+  if( _.isFinite(clean['rect.min_lat']) &&
+      _.isFinite(clean['rect.max_lat']) &&
+      _.isFinite(clean['rect.min_lon']) &&
+      _.isFinite(clean['rect.max_lon']) ){
+    vs.set({
+      'boundary:rect:bottom': clean['rect.min_lat'],
+      'boundary:rect:top': clean['rect.max_lat'],
+      'boundary:rect:left': clean['rect.min_lon'],
+      'boundary:rect:right': clean['rect.max_lon'],
+    });
+  }
+
+  if(_.isString(clean['rank']) && clean['rank'] === 'popularity') {
+    query.score( peliasQuery.view.popularity( peliasQuery.view.leaf.match_all ) );
   }
 
   // bounding circle
@@ -92,7 +110,7 @@ function generateQuery( clean ){
   }
 
   // categories
-  if (clean.categories) {
+  if (clean.categories && !_.isEmpty(clean.categories)) {
     vs.var('input:categories', clean.categories);
   }
 

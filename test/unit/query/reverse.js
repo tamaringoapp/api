@@ -7,6 +7,7 @@ const all_layers = require('../../../helper/type_mapping').layers;
 // helper for canned views
 const views = {
   boundary_country: 'boundary_country view',
+  boundary_rect: 'boundary_rect view',
   boundary_circle: 'boundary_circle view',
   sources: 'sources view',
   layers: 'layers view',
@@ -62,6 +63,7 @@ module.exports.tests.query = (test, common) => {
 
     t.deepEquals(query.body.filter_functions, [
       'boundary_circle view',
+      'boundary_rect view',
       'sources view',
       'layers view',
       'categories view',

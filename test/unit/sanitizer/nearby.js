@@ -78,10 +78,10 @@ module.exports.tests.sanitize = function(test, common) {
             throw new Error('incorrect parameters passed to _flag_bool');
         }
       },
-      '../sanitizer/_geo_reverse': function () {
+      '../sanitizer/_geo_nearby': function () {
         return {
           sanitize: () => {
-            called_sanitizers.push('_geo_reverse');
+            called_sanitizers.push('_geo_nearby');
             return { errors: [], warnings: [] };
           }
         };
@@ -121,7 +121,7 @@ module.exports.tests.sanitize = function(test, common) {
       '_geonames_deprecations',
       '_size',
       '_flag_bool',
-      '_geo_reverse',
+      '_geo_nearby',
       '_boundary_country',
       '_categories',
       '_request_language'

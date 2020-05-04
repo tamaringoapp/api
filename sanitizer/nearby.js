@@ -14,6 +14,7 @@ module.exports.middleware = (_api_pelias_config) => {
     size: require('../sanitizer/_size')(/* use defaults*/),
     private: require('../sanitizer/_flag_bool')('private', false),
     geo_reverse: require('../sanitizer/_geo_reverse')(),
+    geo_nearby: require('../sanitizer/geo_nearby')(),
     boundary_country: require('../sanitizer/_boundary_country')(),
     categories: require('../sanitizer/_categories')(),
     request_language: require('../sanitizer/_request_language')()
